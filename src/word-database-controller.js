@@ -1,9 +1,7 @@
 import 'dotenv/config';
 
 const fs = require('fs');
-function getRandomInt(max) {
-    return Math.floor(Math.random() * Math.floor(max));
-}
+const helpers = require('./helpers.js');
 
 function getWordsArray() {
     var array = fs.readFileSync(process.env.WORDS_FILE).toString().split("\r\n");
@@ -13,7 +11,7 @@ var methods = {
     getRandomWord: function () {
         var words = getWordsArray();
         var wordsCount = words.length;
-        var randomInt = getRandomInt(wordsCount);
+        var randomInt = helpers.getRandomInt(wordsCount);
         return words[randomInt];
     }
 };
