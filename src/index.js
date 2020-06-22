@@ -13,7 +13,12 @@ console.log(Word);
 
 app.get('/', (req, res) => {
   var raund = new Round();
-  res.json(raund.getPull());
+  raund.guessCurrentWord();
+  raund.guessCurrentWord();
+  raund.guessCurrentWord();
+  raund.skipCurrentWord();
+  raund.finish();
+  res.json(raund.dict());
 });
 
 app.listen(process.env.PORT, () =>
