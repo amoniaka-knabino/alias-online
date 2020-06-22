@@ -1,7 +1,5 @@
 import 'dotenv/config';
 
-
-
 const fs = require('fs');
 function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));

@@ -6,11 +6,14 @@ const app = express();
 
 app.use(cors());
 
-var word_db = require('./word-database-controller.js');
+const word_db = require('./word-database-controller.js');
+const Word = require('./word-class.js');
+console.log(Word);
 
 app.get('/', (req, res) => {
-  var words = word_db.getRandomWord();
-  res.send(words);
+  var randomWord = word_db.getRandomWord();
+  var word = new Word(randomWord);
+  res.json(word.dict());
 });
 
 app.listen(process.env.PORT, () =>
