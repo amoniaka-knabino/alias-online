@@ -1,4 +1,5 @@
 const Round = require("./round-class");
+const helpers = require('./helpers.js');
 
 const GameStatus = Object.freeze({"NotStarted":0, "Started":1, "Finished":2})
 
@@ -11,6 +12,7 @@ class Game
         this.Players = [firstPlayer]
         this.currentRoundNumber = 0;
         this.Rounds = []
+        this.InviteToken = helpers.randStr();
     }
 
     startGame()
