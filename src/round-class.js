@@ -4,19 +4,21 @@ const Word = require('./word-class.js');
 const MAXS_WORDS_PER_ROUND = 5
 
 class Round{
-    constructor()
+    constructor(player)
     {
         this.TotalScore = 0;
         this.IsFinished = false;
-        this.WordPull = this.createWordsPull(MAXS_WORDS_PER_ROUND)
-        this.CurrentWord = this.WordPull.pop()
-        this.GuessedWords = []
-        this.SkippedWords = []
+        this.WordPull = this.createWordsPull(MAXS_WORDS_PER_ROUND);
+        this.CurrentWord = this.WordPull.pop();
+        this.GuessedWords = [];
+        this.SkippedWords = [];
+        this.Player = player;
     }
 
     finish()
     {
         this.IsFinished = true;
+        this.Player.updateScore(this.TotalScore);
     }
 
     guessCurrentWord()

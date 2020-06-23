@@ -5,13 +5,6 @@ class Player{
         this.Name = name;
         this.Token = token;
         this.Score = 0;
-        this.Round = new Round();
-    }
-
-    finishRound()
-    {
-        this.Round.finishRound();
-        this.updateScore(this.Round.TotalScore)
     }
 
     updateScore(delta)
