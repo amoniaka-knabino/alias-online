@@ -1,24 +1,25 @@
+const WordStatus = Object.freeze({"Underfined":0, "Skipped":1, "Guessed":2})
+
 class Word{
     constructor(wordStr)
     {
         this.Word = wordStr;
-        this.IsGuessed = false;
-        this.IsSkipped = false;
+        this.Status = WordStatus.Underfined;
     }
 
     skip()
     {
-        this.IsSkipped = true;
+        this.Status = WordStatus.Skipped;
     }
 
     guess()
     {
-        this.IsGuessed = true;
+        this.Status = WordStatus.Guessed;
     }
 
     dict()
     {
-        return {"Word":this.Word, "IsGuessed":this.IsGuessed, "IsSkipped":this.IsSkipped};
+        return {"Word":this.Word, "Status":this.Status};
     }
 
 }
