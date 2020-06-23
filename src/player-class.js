@@ -1,10 +1,9 @@
 const Round = require('./round-class.js');
-const helpers = require('./helpers.js');
 class Player{
-    constructor(name)
+    constructor(name, token)
     {
         this.Name = name;
-        this.Token = helpers.token();
+        this.Token = token;
         this.Score = 0;
         this.Round = new Round();
     }
