@@ -1,5 +1,3 @@
-import 'dotenv/config';
-
 const fs = require('fs');
 const helpers = require('./helpers.js');
 
