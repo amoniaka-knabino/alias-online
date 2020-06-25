@@ -1,6 +1,32 @@
-web:
-  build: .
-  volumes:
-    - "./app:/src/app"
-  ports:
-    - "3030:3000"
+version: '2.2'
+services:
+    postgres:
+        image: postgres:11
+        ports:
+          - 5432:5432
+        environment:
+            - POSTGRES_PASSWORD=postgres
+            - POSTGRES_DB=postgres
+            - POSTGRES_USER=postgres
+        restart: on-failure:3
+        networks:
+            internal:
+
+    web:
+        build: .
+        container_name: alias-web
+        restart: on-failure:3
+        volumes:
+            - "./app:/src/app"
+        depends_on:
+             - postgres
+        ports:
+            - "3030:3000"
+        networks:
+            default:
+            internal:
+    
+networks:
+    default:
+    internal:
+        internal: true
