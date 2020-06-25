@@ -10,6 +10,8 @@ router.get('/', function(req, res) {
   var firstplayer = new Player('lol','lol');
   var nextPlayer = new Player('kek','kek');
   var game = new Game(2, -1, firstplayer);
+  game.startGame();
+  game.startRound();
   console.log(game)
   res.json(game.dict());
 });
