@@ -1,5 +1,5 @@
 const Round = require("./round-class");
-const helpers = require('./helpers.js');
+const helpers = require('../helpers.js');
 
 const GameStatus = Object.freeze({"NotStarted":0, "Started":1, "Finished":2})
 

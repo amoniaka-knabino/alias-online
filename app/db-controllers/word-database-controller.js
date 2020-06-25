@@ -1,5 +1,5 @@
 const fs = require('fs');
-const helpers = require('./helpers.js');
+const helpers = require('../helpers.js');
 
 function getWordsArray() {
     console.log(process.env.WORDS_FILE);

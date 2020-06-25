@@ -1,4 +1,4 @@
-const word_db = require('./word-database-controller.js');
+const word_db = require('../db-controllers/word-database-controller.js');
 const Word = require('./word-class.js');
 
 const MAXS_WORDS_PER_ROUND = 5
