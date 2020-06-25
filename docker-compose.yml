@@ -21,6 +21,7 @@ services:
             - DB_USER=postgres
             - DB_DB=postgres
             - DB_PASS=postgres
+            - DB_HOST=postgres
         volumes:
             - "./app:/src/app"
         depends_on:

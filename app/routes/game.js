@@ -25,6 +25,7 @@ router.get('/create', function(req, res) {
     var fisrtPlayer = new Player(userName, userToken);
     var game = new Game(roundCount, roundTime, fisrtPlayer);
     console.log(game)
+    //add game to db
     res.json({"inviteToken":game.InviteToken});
 });
 
