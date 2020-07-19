@@ -1,4 +1,4 @@
-version: '2.2'
+version: '3'
 services:
     postgres:
         image: postgres:11
@@ -8,14 +8,14 @@ services:
             - POSTGRES_PASSWORD=postgres
             - POSTGRES_DB=postgres
             - POSTGRES_USER=postgres
-        restart: on-failure:3
+        restart: always
         networks:
             internal:
 
     web:
         build: .
         container_name: alias-web
-        restart: on-failure:3
+        restart: always
         env_file:
             - .env
         volumes:
