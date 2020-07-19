@@ -39,9 +39,9 @@ class Round{
 
     createWordsPull(wordsCount)
     {
-        var wordPull = []
+        let wordPull = []
         for (let i = 0; i < wordsCount; i++) {
-            var word = new Word(word_db.getRandomWord());
+            let word = new Word(word_db.getRandomWord());
             wordPull.push(word);
           }
         return wordPull;

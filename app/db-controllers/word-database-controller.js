@@ -3,14 +3,14 @@ const helpers = require('../helpers.js');
 
 function getWordsArray() {
     console.log(process.env.WORDS_FILE);
-    var array = fs.readFileSync(process.env.WORDS_FILE).toString().split("\r\n");
+    let array = fs.readFileSync(process.env.WORDS_FILE).toString().split("\r\n");
     return array;
 }
-var methods = {
+let methods = {
     getRandomWord: function () {
-        var words = getWordsArray();
-        var wordsCount = words.length;
-        var randomInt = helpers.getRandomInt(wordsCount);
+        let words = getWordsArray();
+        let wordsCount = words.length;
+        let randomInt = helpers.getRandomInt(wordsCount);
         return words[randomInt];
     }
 };

@@ -1,7 +1,7 @@
 const cookieParser = require("cookie-parser");
 
-var express = require('express');
-var router = express.Router();
+let express = require('express');
+let router = express.Router();
 
 //app.use(cookieParser());
 //const Round = require('../classes/round-class.js');
@@ -9,21 +9,21 @@ const Player = require('../classes/player-class.js');
 const Game = require('../classes/game-class.js');
 
 router.get('/join', function(req, res) {
-    var inviteToken = req.query.inviteToken;
+    let inviteToken = req.query.inviteToken;
     console.log(inviteToken);
-    var userToken = req.cookies["userToken"];
+    let userToken = req.cookies["userToken"];
     console.log(userToken);
     res.json([inviteToken, userToken]);
     //get game from db, add player, save to db...
 });
 
 router.get('/create', function(req, res) {
-    var userToken = req.cookies["userToken"];
-    var userName = req.cookies["userName"];
-    var roundTime = req.query.roundTime;
-    var roundCount = req.query.roundCount;
-    var fisrtPlayer = new Player(userName, userToken);
-    var game = new Game(roundCount, roundTime, fisrtPlayer);
+    let userToken = req.cookies["userToken"];
+    let userName = req.cookies["userName"];
+    let roundTime = req.query.roundTime;
+    let roundCount = req.query.roundCount;
+    let firstPlayer = new Player(userName, userToken);
+    let game = new Game(roundCount, roundTime, firstPlayer);
     console.log(game)
     //add game to db
     res.json({"inviteToken":game.InviteToken});

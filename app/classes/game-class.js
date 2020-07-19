@@ -33,8 +33,8 @@ class Game
     startRound()
     {
         this.currentRoundNumber++;
-        var currentPlayer = this.getCurrentPlayer();
-        var currentRound = new Round(currentPlayer);
+        let currentPlayer = this.getCurrentPlayer();
+        let currentRound = new Round(currentPlayer);
         this.Rounds.push(currentRound);
         if (this.currentRoundNumber == this.RoundCount) this.finishGame();
     }
