@@ -1,0 +1,7 @@
+# ignore dependencies
+app/node_modules
+app/node_modules/*
+app/package-lock.json
+# shut up .idea
+.idea
+.idea/*

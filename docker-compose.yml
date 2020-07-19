@@ -16,13 +16,8 @@ services:
         build: .
         container_name: alias-web
         restart: on-failure:3
-        environment: 
-            - WORDS_FILE=/src/app/word-banks/test.txt
-            - DB_USER=postgres
-            - DB_DB=postgres
-            - DB_PASS=postgres
-            - DB_HOST=postgres
-            - DB_DIALECT=postgres
+        env_file:
+            - .env
         volumes:
             - "./app:/src/app"
         depends_on:
@@ -32,7 +27,7 @@ services:
         networks:
             default:
             internal:
-    
+
 networks:
     default:
     internal:
