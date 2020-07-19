@@ -1,5 +1,5 @@
-var express = require('express');
-var router = express.Router();
+let express = require('express');
+let router = express.Router();
 
 const Round = require('../classes/round-class.js');
 const Player = require('../classes/player-class.js');
