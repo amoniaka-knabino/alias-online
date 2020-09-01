@@ -24,29 +24,44 @@ User.init({
   // options
 });
 
-User.createNew = function(name, token)
+User.createNew = async function(name, token)
 {
-  User.create({ Name: name, Token: token, Score:0 }).then(user => {
-    console.log("New user's id:", user.id);
-  });
+  let user = await User.create({ Name: name, Token: token, Score:0 });
+  console.log("New user's id:", user.id);
 }
 
-User.logAllUsers = function()
+User.logAllUsers = async function()
 {
-  User.findAll().then(users => {
-    console.log("All users:", JSON.stringify(users, null, 4));
-  });
+  let users = await User.findAll();
+  console.log("All users:", JSON.stringify(users, null, 4));
 }
 
-User.deleteUserByToken = function(token)
+User.deleteUserByToken = async function(token)
 {
-  User.destroy({
+  let a = await User.destroy({
     where: {
       Token: token
     }
-  }).then(() => {
-    console.log("Deleted " + token);
   });
+  console.log("Deleted " + token);
+}
+
+User.updateScoreByToken = async function(token, delta)
+{
+  let user = await User.findOne({
+    where: {
+      Token: token
+  }});
+  console.log("token " + token + " user " + user);
+  let currentScore = user.Score;
+  console.log(token + "'s score " + currentScore)
+  let newScore = currentScore + delta;
+  let a = await User.update({ Score: newScore }, {
+    where: {
+      Token: token
+    }
+  });
+  console.log("Updated " + token + " score from " + currentScore + " to " + newScore);
 }
 
 sequelize.sync();
