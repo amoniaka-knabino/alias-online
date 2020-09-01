@@ -11,7 +11,8 @@ User.init({
   },
   Token: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
+    unique: true
   },
   Score: {
     type: Sequelize.INTEGER,
@@ -22,6 +23,31 @@ User.init({
   modelName: 'user'
   // options
 });
+
+User.createNew = function(name, token)
+{
+  User.create({ Name: name, Token: token, Score:0 }).then(user => {
+    console.log("New user's id:", user.id);
+  });
+}
+
+User.logAllUsers = function()
+{
+  User.findAll().then(users => {
+    console.log("All users:", JSON.stringify(users, null, 4));
+  });
+}
+
+User.deleteUserByToken = function(token)
+{
+  User.destroy({
+    where: {
+      Token: token
+    }
+  }).then(() => {
+    console.log("Deleted " + token);
+  });
+}
 
 sequelize.sync();
 
