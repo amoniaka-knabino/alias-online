@@ -27,6 +27,12 @@ router.get('/getAll', async function(req, res) {
     res.json(users);
 });
 
+router.get('/getInfo', async function(req, res) {
+    userToken = req.query.userToken;
+    let user = await User.getByToken(userToken);
+    res.json(user);
+});
+
 router.get('/updateScore', async function(req, res) {
     userToken = req.query.userToken;
     console.log(userToken);
