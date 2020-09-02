@@ -55,7 +55,27 @@ Round.createNew = async function(playerToken)
 {
   let wordPull = await Round.createWordPull(MAXS_WORDS_PER_ROUND);
   let round = await Round.create({ PlayerToken: playerToken, WordPull:wordPull});
-  console.log(round);
+  //console.log(round);
+  console.log("created round uuid " + round.UUID);
+  return round.UUID;
+}
+
+Round.deleteByUUID = async function(roundUUID)
+{
+  let a = await Round.destroy({
+    where: {
+      UUID: roundUUID
+    }
+  });
+  console.log("Deleted " + roundUUID);
+}
+
+Round.getByUUID = async function(roundUUID)
+{
+  let round = await Round.findOne({
+    where: {
+      UUID: roundUUID
+  }});
   return round;
 }
 
@@ -69,6 +89,24 @@ Round.createWordPull = async function(wordsCount)
     }
   return wordPull;
 }
+
+Round.updateScoreByUUID = async function(roundUUID, delta)
+{
+  let round = await Round.findOne({
+    where: {
+      UUID: roundUUID
+  }});
+  let currentScore = round.TotalScore;
+  console.log("curScore " + currentScore);
+  let newScore = currentScore + delta;
+  let a = await Round.update({ TotalScore: newScore }, {
+    where: {
+      UUID: roundUUID
+    }
+  });
+  console.log("Updated " + roundUUID + " score from " + currentScore + " to " + newScore);
+}
+
 sequelize.sync();
 
 module.exports = Round;
