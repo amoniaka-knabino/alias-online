@@ -28,6 +28,16 @@ User.createNew = async function(name, token)
 {
   let user = await User.create({ Name: name, Token: token, Score:0 });
   console.log("New user's id:", user.id);
+  return token;
+}
+
+User.getByToken = async function(token)
+{
+  let user = await User.findOne({
+    where: {
+      Token: token
+  }});
+  return user;
 }
 
 User.logAllUsers = async function()
