@@ -105,6 +105,7 @@ Round.finishByUUID = async function(roundUUID)
     }
   });
   await User.updateScoreByToken(round.PlayerToken, round.TotalScore); 
+  console.log("r: finish " + roundUUID);
   return round;
 }
 
@@ -180,7 +181,6 @@ Round.updateScoreByUUID = async function(roundUUID, delta)
       UUID: roundUUID
   }});
   let currentScore = round.TotalScore;
-  console.log("curScore " + currentScore);
   let newScore = currentScore + delta;
   let a = await Round.update({ TotalScore: newScore }, {
     where: {
