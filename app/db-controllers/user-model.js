@@ -16,7 +16,8 @@ User.init({
   },
   Score: {
     type: Sequelize.INTEGER,
-    allowNull: false
+    allowNull: false,
+    defaultValue:0
   }
 }, {
   sequelize,
@@ -26,7 +27,7 @@ User.init({
 
 User.createNew = async function(name, token)
 {
-  let user = await User.create({ Name: name, Token: token, Score:0 });
+  let user = await User.create({ Name: name, Token: token});
   console.log("New user's id:", user.id);
   return token;
 }

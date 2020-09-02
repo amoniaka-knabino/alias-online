@@ -42,6 +42,11 @@ Game.init({
     type: Sequelize.INTEGER,
     allowNull: false,
     defaultValue: 10
+  },
+  RoundTimeSeconds: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    defaultValue: 60
   }
 }, {
   sequelize,
@@ -49,9 +54,9 @@ Game.init({
   // options
 });
 
-Game.createNew = async function(playerToken, roundCount)
+Game.createNew = async function(playerToken, roundCount, roundTimeSec)
 {
-  let game = await Game.create({PlayersTokens: [playerToken], RoundCount:roundCount});
+  let game = await Game.create({PlayersTokens: [playerToken], RoundCount:roundCount, RoundTimeSeconds:roundTimeSec});
   console.log("created game uuid " + game.UUID);
   return game.UUID;
 }
@@ -82,8 +87,6 @@ Game.startByUUID = async function(gameUUID)
       UUID: gameUUID
     }
   });
-  let uuid = await Game.startRound(gameUUID);
-  return uuid;
 }
 
 Game.finishByUUID = async function(gameUUID)
@@ -176,13 +179,6 @@ Game.finishRound = async function(gameUUID)
       }});
     let curRoundUUID = await Game.getCurrentRoundUUID(gameUUID);
     await Round.finishByUUID(curRoundUUID);
-}
-
-Game.nextRound = async function(gameUUID)
-{
-    await Game.finishRound(gameUUID);
-    let newRoundUUID = await Game.startRound(gameUUID);
-    return newRoundUUID;
 }
 
 sequelize.sync();

@@ -1,34 +1,67 @@
-const cookieParser = require("cookie-parser");
-
 let express = require('express');
 let router = express.Router();
 
-//app.use(cookieParser());
-//const Round = require('../classes/round-class.js');
-const Player = require('../classes/player-class.js');
-const Game = require('../classes/game-class.js');
+const User = require('../db-controllers/user-model.js');
+const Game = require('../db-controllers/game-model.js');
 
-router.get('/join', function(req, res) {
-    let inviteToken = req.query.inviteToken;
-    console.log(inviteToken);
-    let userToken = req.cookies["userToken"];
+router.get('/join', async function(req, res) {
+    let gameUUID = req.query.gameUUID;
+    console.log(gameUUID);
+    let userToken = req.query.userToken;
     console.log(userToken);
-    res.json([inviteToken, userToken]);
-    //get game from db, add player, save to db...
+    await Game.addPlayer(gameUUID, userToken);
+    res.json("ok");
 });
 
-router.get('/create', function(req, res) {
-    let userToken = req.cookies["userToken"];
-    let userName = req.cookies["userName"];
-    let roundTime = req.query.roundTime;
+router.get('/create', async function(req, res) {
+    let userToken = req.query.userToken;
     let roundCount = req.query.roundCount;
-    let firstPlayer = new Player(userName, userToken);
-    let game = new Game(roundCount, roundTime, firstPlayer);
-    console.log(game)
-    //add game to db
-    res.json({"inviteToken":game.InviteToken});
+    let roundTime = req.query.roundTimeSeconds;
+    let gameUUID = await Game.createNew(userToken, roundCount, roundTime);
+    res.json({"gameUUID":gameUUID});
 });
 
+router.get('/start', async function(req, res) {
+    let gameUUID = req.query.gameUUID;
+    await Game.startByUUID(gameUUID);
+    res.json("ok");
+});
+
+router.get('/finish', async function(req, res) {
+    let gameUUID = req.query.gameUUID;
+    await Game.finishByUUID(gameUUID);
+    res.json("ok");
+});
+
+router.get('/startRound', async function(req, res) {
+    let gameUUID = req.query.gameUUID;
+    let ans = await Game.startRound(gameUUID);
+    res.json({"RoundUUID":ans});
+});
+
+router.get('/finishRound', async function(req, res) {
+    let gameUUID = req.query.gameUUID;
+    await Game.finishRound(gameUUID);
+    res.json("ok");
+});
+
+router.get('/getInfo', async function(req, res) {
+    let gameUUID = req.query.gameUUID;
+    let game = await Game.getByUUID(gameUUID);
+    res.json(game);
+});
+
+router.get('/getCurrentRoundUUID', async function(req, res) {
+    let gameUUID = req.query.gameUUID;
+    let ans = await Game.getCurrentRoundUUID(gameUUID);
+    res.json(ans);
+});
+
+router.get('/getCurrentPlayerToken', async function(req, res) {
+    let gameUUID = req.query.gameUUID;
+    let ans = await Game.getCurrentPlayerToken(gameUUID);
+    res.json(ans);
+});
 
 module.exports = router;
 
