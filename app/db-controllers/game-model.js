@@ -125,21 +125,16 @@ Game.getCurrentPlayerToken = async function(gameUUID)
 
 Game.startRound = async function(gameUUID)
 {
-    let game_old = await Game.findOne({
+    let game = await Game.findOne({
         where: {
           UUID: gameUUID
       }});
-    let newCurrentRoundNumber = game_old.CurrentRoundNumber+1;
+    let newCurrentRoundNumber = game.CurrentRoundNumber+1;
     await Game.update({ CurrentRoundNumber: newCurrentRoundNumber }, {
         where: {
           UUID: gameUUID
         }
       });
-    let game = await Game.findOne({
-        where: {
-          UUID: gameUUID
-      }});
-    console.log(game.CurrentRoundNumber, newCurrentRoundNumber);
     if (newCurrentRoundNumber == game.RoundCount)
     {
         await Game.finishByUUID(gameUUID);

@@ -1,7 +1,6 @@
 let express = require('express');
 let router = express.Router();
 
-const User = require('../db-controllers/user-model.js');
 const Game = require('../db-controllers/game-model.js');
 
 router.get('/join', async function(req, res) {
