@@ -5,7 +5,11 @@ const Model = Sequelize.Model;
 DataTypes = Sequelize.DataTypes;
 
 const word_db = require('../db-controllers/word-database-controller.js');
-const MAXS_WORDS_PER_ROUND = 5
+const MAXS_WORDS_PER_ROUND = 5;
+const GUESS_POINTS = 1;
+const SKIP_POINTS = -1;
+
+const User = require('../db-controllers/user-model.js');
 
 class Round extends Model {}
 Round.init({
@@ -44,6 +48,9 @@ Round.init({
   PlayerToken: {
     type: Sequelize.STRING,
     allowNull: false
+  },
+  CurrentWord: {
+    type: Sequelize.STRING,
   }
 }, {
   sequelize,
@@ -54,7 +61,8 @@ Round.init({
 Round.createNew = async function(playerToken)
 {
   let wordPull = await Round.createWordPull(MAXS_WORDS_PER_ROUND);
-  let round = await Round.create({ PlayerToken: playerToken, WordPull:wordPull});
+  let curWord = wordPull.pop();
+  let round = await Round.create({ PlayerToken: playerToken, WordPull:wordPull, CurrentWord:curWord});
   //console.log(round);
   console.log("created round uuid " + round.UUID);
   return round.UUID;
@@ -79,6 +87,27 @@ Round.getByUUID = async function(roundUUID)
   return round;
 }
 
+Round.getCurrentWordByUUID = async function(roundUUID)
+{
+  let round = await Round.getByUUID(roundUUID);
+  return round.CurrentWord;
+}
+
+Round.finishByUUID = async function(roundUUID)
+{
+  let round = await Round.findOne({
+    where: {
+      UUID: roundUUID
+  }});
+  let a = await Round.update({ IsFinished: true }, {
+    where: {
+      UUID: roundUUID
+    }
+  });
+  await User.updateScoreByToken(round.PlayerToken, round.TotalScore); 
+  return round;
+}
+
 Round.createWordPull = async function(wordsCount)
 {
   let wordPull = []
@@ -88,6 +117,60 @@ Round.createWordPull = async function(wordsCount)
       wordPull.push(word);
     }
   return wordPull;
+}
+
+Round.changeCurrentWordByUUID = async function(roundUUID)
+{
+  let round = await Round.findOne({
+    where: {
+      UUID: roundUUID
+  }});
+  let wordPull = round.WordPull;
+  let curWord = wordPull.pop();
+  await Round.update({ WordPull: wordPull }, {
+    where: {
+      UUID: roundUUID
+    }
+  });
+  await Round.update({ CurrentWord: curWord }, {
+    where: {
+      UUID: roundUUID
+    }
+  });
+}
+
+Round.guessWordByUUID = async function(roundUUID)
+{
+  await Round.updateScoreByUUID(roundUUID, GUESS_POINTS);
+  let round = await Round.findOne({
+    where: {
+      UUID: roundUUID
+  }});
+  let guessedWords = round.GuessedWords;
+  guessedWords.push(round.CurrentWord);
+  await Round.update({ GuessedWords: guessedWords }, {
+    where: {
+      UUID: roundUUID
+    }
+  });
+  await Round.changeCurrentWordByUUID(roundUUID);
+}
+
+Round.skipWordByUUID = async function(roundUUID)
+{
+  await Round.updateScoreByUUID(roundUUID, SKIP_POINTS);
+  let round = await Round.findOne({
+    where: {
+      UUID: roundUUID
+  }});
+  let skippedWords = round.SkippedWords;
+  skippedWords.push(round.CurrentWord);
+  await Round.update({ SkippedWords: skippedWords }, {
+    where: {
+      UUID: roundUUID
+    }
+  });
+  await Round.changeCurrentWordByUUID(roundUUID);
 }
 
 Round.updateScoreByUUID = async function(roundUUID, delta)
