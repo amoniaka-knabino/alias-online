@@ -135,25 +135,17 @@ Game.startRound = async function(gameUUID)
           UUID: gameUUID
         }
       });
-    if (newCurrentRoundNumber == game.RoundCount)
-    {
-        await Game.finishByUUID(gameUUID);
-        return "game finished";
-    }
-    else
-    {
-        let currentPlayerToken = await Game.getCurrentPlayerToken(gameUUID);
-        let currentRoundUUID = await Round.createNew(currentPlayerToken);
-        let roundsUUIDs = game.RoundsUUIDs;
-        roundsUUIDs.push(currentRoundUUID);
-        console.log(roundsUUIDs);
-        await Game.update({ RoundsUUIDs: roundsUUIDs }, {
-            where: {
-              UUID: gameUUID
-            }
-          });
-        return currentRoundUUID;
-    }    
+    let currentPlayerToken = await Game.getCurrentPlayerToken(gameUUID);
+    let currentRoundUUID = await Round.createNew(currentPlayerToken);
+    let roundsUUIDs = game.RoundsUUIDs;
+    roundsUUIDs.push(currentRoundUUID);
+    console.log(roundsUUIDs);
+    await Game.update({ RoundsUUIDs: roundsUUIDs }, {
+        where: {
+          UUID: gameUUID
+        }
+      });
+    return currentRoundUUID;
 }
 
 Game.getCurrentRoundUUID = async function(gameUUID)
