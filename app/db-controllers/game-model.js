@@ -135,17 +135,17 @@ Game.startRound = async function(gameUUID)
           UUID: gameUUID
         }
       });
-    let currentPlayerToken = await Game.getCurrentPlayerToken(gameUUID);
-    let currentRoundUUID = await Round.createNew(currentPlayerToken);
-    let roundsUUIDs = game.RoundsUUIDs;
-    roundsUUIDs.push(currentRoundUUID);
-    console.log(roundsUUIDs);
-    await Game.update({ RoundsUUIDs: roundsUUIDs }, {
-        where: {
-          UUID: gameUUID
-        }
-      });
-    return currentRoundUUID;
+      let currentPlayerToken = await Game.getCurrentPlayerToken(gameUUID);
+      let currentRoundUUID = await Round.createNew(currentPlayerToken);
+      let roundsUUIDs = game.RoundsUUIDs;
+      roundsUUIDs.push(currentRoundUUID);
+      console.log(roundsUUIDs);
+      await Game.update({ RoundsUUIDs: roundsUUIDs }, {
+          where: {
+            UUID: gameUUID
+          }
+        });
+      return currentRoundUUID;
 }
 
 Game.getCurrentRoundUUID = async function(gameUUID)
@@ -166,6 +166,10 @@ Game.finishRound = async function(gameUUID)
       }});
     let curRoundUUID = await Game.getCurrentRoundUUID(gameUUID);
     await Round.finishByUUID(curRoundUUID);
+    if (game.CurrentRoundNumber == game.RoundCount)
+    {
+      Game.finishByUUID(gameUUID);
+    }
 }
 
 sequelize.sync();
