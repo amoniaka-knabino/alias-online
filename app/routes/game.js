@@ -8,8 +8,8 @@ router.get('/join', async function(req, res) {
     console.log(gameUUID);
     let userToken = req.query.userToken;
     console.log(userToken);
-    await Game.addPlayer(gameUUID, userToken);
-    res.json("ok");
+    var ans = await Game.addPlayer(gameUUID, userToken);
+    res.json(ans);
 });
 
 router.get('/create', async function(req, res) {

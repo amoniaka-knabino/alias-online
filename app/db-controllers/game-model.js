@@ -105,12 +105,20 @@ Game.addPlayer = async function(gameUUID, playerToken)
       UUID: gameUUID
   }});
   let playersTokens = game.PlayersTokens;
-  playersTokens.push(playerToken);
-  await Game.update({ PlayersTokens: playersTokens }, {
-    where: {
-      UUID: gameUUID
-    }
-  });
+  if (playersTokens.includes(playerToken))
+  {
+    return "player have already been added";
+  }
+  else
+  {
+    playersTokens.push(playerToken);
+    await Game.update({ PlayersTokens: playersTokens }, {
+      where: {
+        UUID: gameUUID
+      }
+    });
+    return "ok";
+  }
 }
 
 Game.getCurrentPlayerToken = async function(gameUUID)
