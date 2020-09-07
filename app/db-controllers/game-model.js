@@ -174,7 +174,7 @@ Game.finishRound = async function(gameUUID)
       }});
     let curRoundUUID = await Game.getCurrentRoundUUID(gameUUID);
     await Round.finishByUUID(curRoundUUID);
-    if (game.CurrentRoundNumber - 1 == game.RoundCount)
+    if (game.CurrentRoundNumber == game.RoundCount)
     {
       Game.finishByUUID(gameUUID);
     }
