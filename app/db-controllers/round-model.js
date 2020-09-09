@@ -114,7 +114,7 @@ Round.createWordPull = async function(wordsCount)
   let wordPull = []
   for (let i = 0; i < wordsCount; i++) {
       let word = word_db.getRandomWord();
-      console.log(word);
+      // console.log(word);
       wordPull.push(word);
     }
   return wordPull;

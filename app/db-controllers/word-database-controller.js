@@ -2,7 +2,7 @@ const fs = require('fs');
 const helpers = require('../helpers.js');
 
 function getWordsArray() {
-    console.log(process.env.WORDS_FILE);
+    // console.log(process.env.WORDS_FILE);
     let array = fs.readFileSync(process.env.WORDS_FILE).toString().split("\r\n");
     return array;
 }
