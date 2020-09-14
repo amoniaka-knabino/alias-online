@@ -2,6 +2,10 @@
 
 Backend for Alias Online App
 
+What is alias? [wiki](https://en.wikipedia.org/wiki/Alias_(board_game))
+
+Frontend: [repo](https://github.com/somnoynadno/alias_online) [apk](http://somnoynadno.ru/static/alias/bin/)
+
 ## Deploy
 
 ### Using docker-compose
